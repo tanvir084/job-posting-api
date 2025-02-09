@@ -1,0 +1,28 @@
+services:
+  job-platform:
+    build: .
+    container_name: job-platform
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: 'mongodb://mongodb:27017/job_platform' # Keep the internal port 27017
+      PORT: '3000'
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+
+networks:
+  express-mongo:
+    driver: bridge
